@@ -31,10 +31,10 @@ automated failover response
  Active Development — Phase 1
 
 ## Roadmap
-- Phase 1: Core engine + dual engine architecture
-- Phase 2: Aegis + Sentinel-V1 implementation  
-- Phase 3: Full cybersecurity toolkit + Kali bridge
-
+- Phase 1: SAM V2 upgrade + watchdog system
+- Phase 2: Sentinel-V1 — standalone monitoring tool  
+- Phase 3: Aegis — failover and response automation
+- Phase 4: Full DedSec integration + Kali bridge
 ---
 *Agentic | Adaptive | Autonomous*
 
