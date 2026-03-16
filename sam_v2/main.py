@@ -1,32 +1,42 @@
 from modules import voice, apps, system, web, fun  
 
-voice.speak("All systems online, sir. How may I assist?")  
+dedsec = brain.DedSecBrain()
 
-while True:  
-    command = voice.listen(timeout=15)  
+voice.speak("All systems online sir , how may i assists")
 
-    if command is None:    
-        voice.speak("I didn't hear anything. Can you say that again")    
-        continue    
+while True:
+    command = voice.listen(timeout=15)
 
-    if "exit" in command or "quit" in command:    
-        voice.speak("Goodbye! stay safe sir.")    
-        break    
+    if command is None:
+        continue
 
-    if apps.handle_apps(command): continue    
-    if "shutdown" in command: system.shutdown(); continue    
-    if "restart" in command: system.restart(); continue    
-    if "lock" in command: system.lock_system(); continue    
-    if "battery" in command or "status" in command: system.system_status(); continue    
-    if "volume up" in command: system.volume_up(); continue    
-    if "volume down" in command: system.volume_down(); continue    
-    if "mute" in command: system.mute_volume(); continue    
-    if "search for" in command or "look up" in command: web.search_web(command); continue    
-    if "play" in command: web.youtube_play(command); continue    
-    if "search" in command: web.google_search(command); continue    
-    if "screenshot" in command: fun.take_screenshot(); continue    
-    if "joke" in command or "joker" in command: fun.tell_jokes(); continue    
-    if "time" in command: fun.tell_time(); continue    
-    if "date" in command: fun.tell_date(); continue    
+    if "exit" in command or "quit" in command:
+        voice.speak("Goodbye! stay safe sir")
+        break
 
-    voice.speak("Sorry, I couldn't do that.")
+    #GET AGENTIC DECISION
+    ai_response, active_engine = dedsec.query(command)
+    print(f" [{active_engine}]: {ai_response}")
+
+    #Agentic EXECUTION BRIDGE
+    if "EXECUTE:" in ai_response:
+        action = ai_response.replace("EXECUTE:", "").strip().lower()
+
+        # Bridge the AI's decision to your existing modules
+        if "open" in action: apps.handle_apps(action)
+        elif "shutdown" in action: system.shutdown()
+        elif "restart" in action: system.restart()
+        elif "lock" in action: system.lock_system()
+        elif "battery" in action or "status" in action: system.system_status()
+        elif "volume up" in action: system.volume_up()
+        elif "volume down" in action: system.volume_down()
+        elif "mute" in action: system.mute_volume()
+        elif "search for" in action: web.search_web(action)
+        elif "play" in action: web.youtube_play(action)
+        elif "screenshot" in action: fun.take_screenshot()
+        elif "joke" in action: fun.tell_jokes()
+        elif "time" in action: fun.tell_time()
+        elif "date" in action: fun.tell_date()
+    else:
+        #If its not a command , SAM just speaks AI's response
+        voice.speak(ai_response, wait=False)   
